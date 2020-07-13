@@ -19,4 +19,8 @@ Radiotherapy treatment planning requires accurate contours for maximizing target
 7/11/2020 Update
 
 - Basic training/validation function
+- Model: Deeper 3D Residual U-net
+
+7/13/2020 Update
+
 - Model: 3D Residual U-net
