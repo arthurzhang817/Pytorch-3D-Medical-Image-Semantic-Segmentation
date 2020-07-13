@@ -1,6 +1,6 @@
 JOB: seg
 CUDA: True
-PARALLEL: TRUE
+PARALLEL: True
 
 MODEL:
   NAME: Deeper_ResUnet_3D
@@ -15,6 +15,7 @@ DATASET:
   N_CLASSES: 6
   TRAIN_SPLIT: train
   VAL_SPLIT: val
+  NORMALIZE: False
   COLOR_MAP: [[229, 255, 204],[0, 255, 255],[204, 0, 102],[255, 0, 0],[0, 255, 0]]
 
 TRAINING:

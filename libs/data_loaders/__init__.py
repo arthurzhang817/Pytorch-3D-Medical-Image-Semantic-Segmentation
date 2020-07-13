@@ -22,11 +22,13 @@ def build_data_loader(config, write, logger):
 
     t_loader = data_loader(
                 root_dir=data_path,
-                split=config.DATASET.TRAIN_SPLIT
+                split=config.DATASET.TRAIN_SPLIT,
+                normalize=config.DATASET.NORMALIZE
             )
     v_loader = data_loader(
         root_dir=data_path,
-        split=config.DATASET.VAL_SPLIT
+        split=config.DATASET.VAL_SPLIT,
+        normalize=config.DATASET.NORMALIZE
     )
 
     train_loader = torch_data.DataLoader(

@@ -10,7 +10,7 @@ class Prostate_CT_Volume_Loader(torch_data.Dataset):
         self,
         root_dir,
         split,
-        normalize=True
+        normalize=False
     ):
 
         self.normalize = normalize
@@ -37,10 +37,12 @@ class Prostate_CT_Volume_Loader(torch_data.Dataset):
         onehot_path = self.onehot_list[index]
 
         ct_vol = np.load(ct_vol_path)
-        norm = np.linalg.norm(ct_vol)
-        normalized_ct_vol = ct_vol/norm
-        normalized_ct_vol = np.expand_dims(normalized_ct_vol, axis=0)
-        ct = torch.from_numpy(normalized_ct_vol).float()
+        if self.normalize:
+            norm = np.linalg.norm(ct_vol)
+            ct_vol = ct_vol/norm
+            
+        ct_vol = np.expand_dims(ct_vol, axis=0)
+        ct = torch.from_numpy(ct_vol).float()
 
         label = np.load(label_path)
         label = torch.from_numpy(label).long()
