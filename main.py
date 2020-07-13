@@ -21,7 +21,7 @@ if __name__ == "__main__":
         "--config",
         nargs="?",
         type=str,
-        default="config/prostateCT_3dresunet_train.yml",
+        default="config/prostateCT_deeper3dresunet_train.yml",
         help="Specify the path of configuration file here."
     )
 

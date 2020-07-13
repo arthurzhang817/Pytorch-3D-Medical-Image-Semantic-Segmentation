@@ -153,9 +153,60 @@ def train_base(CONFIG, writer, logger, train_loader, val_loader, device):
 
             #############################Validation###############################
             if (i + 1) % CONFIG.TRAINING.VAL_INTERVAL== 0:
-                validation_step(CONFIG, writer, logger, optim, scheduler, i,
-                    model, val_loader, loss_func, running_metrics,val_loss_meter, best_dsc,
-                    device)
+                model.eval()
+                with torch.no_grad():
+                    for _, imgs_val, labels_val, _ in tqdm(val_loader):
+
+                        imgs_val = imgs_val.cuda()
+                        labels_val = labels_val.cuda()
+                        
+                        outputs = model(imgs_val)
+
+                        val_loss = loss_func(input=outputs, target=labels_val)
+
+                        pred = outputs.data.max(1)[1].cpu().numpy()
+                        gt = labels_val.data.cpu().numpy()
+
+                        running_metrics.update(gt, pred)
+                        val_loss_meter.update(val_loss.item())
+
+                writer.add_scalar("loss/val_loss", val_loss_meter.avg, i + 1)
+                logger.info("Iter %d Loss: %.4f" % (i + 1, val_loss_meter.avg))
+
+                # scoring
+                score, class_dsc = running_metrics.get_scores()
+                for k, v in score.items():
+                    print(k, v)
+                    logger.info("{}: {}".format(k, v))
+                    writer.add_scalar("val_metrics/{}".format(k), v, i + 1)
+                
+                for k, v in class_dsc.items():
+                    logger.info("{}: {}".format(k, v))
+                    writer.add_scalar("val_metrics/cls_{}".format(k), v, i + 1)
+                
+                print('-' * 40)
+
+                # reset
+                val_loss_meter.reset()
+                running_metrics.reset()
+
+                if score["Mean Dice Coefficient: \t"] >= best_dsc:
+                    best_dsc = score["Mean Dice Coefficient: \t"]
+                    state = {
+                        "epoch": i + 1,
+                        "model_state": model.state_dict(),
+                        "optimizer_state": optim.state_dict(),
+                        "scheduler_state": scheduler.state_dict(),
+                        "best_dsc": best_dsc
+                    }
+
+                    writer.add_scalar("best_model/dsc", best_dsc, i+1)
+
+                    save_path = os.path.join(
+                        writer.file_writer.get_logdir(),
+                        "{}_{}_best_model.pkl".format(CONFIG.MODEL.NAME, CONFIG.DATASET.NAME),
+                    )
+                    torch.save(state, save_path)
             ######################################################################
 
             ################################End###################################
@@ -163,63 +214,3 @@ def train_base(CONFIG, writer, logger, train_loader, val_loader, device):
                 flag = False
                 break
             ######################################################################
-
-
-def validation_step(CONFIG, writer, logger, optim, scheduler, i,
-    model, val_loader, loss_func, running_metrics, val_loss_meter, best_dsc,
-    device):
-    
-    model.eval()
-    with torch.no_grad():
-        for _, imgs_val, labels_val, _ in tqdm(val_loader):
-
-            imgs_val = imgs_val.cuda()
-            labels_val = labels_val.cuda()
-            
-            outputs = model(imgs_val)
-
-            val_loss = loss_func(input=outputs, target=labels_val)
-
-            pred = outputs.data.max(1)[1].cpu().numpy()
-            gt = labels_val.data.cpu().numpy()
-
-            running_metrics.update(gt, pred)
-            val_loss_meter.update(val_loss.item())
-
-    writer.add_scalar("loss/val_loss", val_loss_meter.avg, i + 1)
-    logger.info("Iter %d Loss: %.4f" % (i + 1, val_loss_meter.avg))
-
-    # scoring
-    score, class_dsc = running_metrics.get_scores()
-    for k, v in score.items():
-        print(k, v)
-        logger.info("{}: {}".format(k, v))
-        writer.add_scalar("val_metrics/{}".format(k), v, i + 1)
-    
-    for k, v in class_dsc.items():
-        logger.info("{}: {}".format(k, v))
-        writer.add_scalar("val_metrics/cls_{}".format(k), v, i + 1)
-    
-    print('-' * 40)
-
-    # reset
-    val_loss_meter.reset()
-    running_metrics.reset()
-
-    if score["Mean Dice Coefficient: \t"] >= best_dsc:
-        best_dsc = score["Mean Dice Coefficient: \t"]
-        state = {
-            "epoch": i + 1,
-            "model_state": model.state_dict(),
-            "optimizer_state": optim.state_dict(),
-            "scheduler_state": scheduler.state_dict(),
-            "best_dsc": best_dsc
-        }
-
-        writer.add_scalar("best_model/dsc", best_dsc, i+1)
-
-        save_path = os.path.join(
-            writer.file_writer.get_logdir(),
-            "{}_{}_best_model.pkl".format(CONFIG.MODEL.NAME, CONFIG.DATASET.NAME),
-        )
-        torch.save(state, save_path)
