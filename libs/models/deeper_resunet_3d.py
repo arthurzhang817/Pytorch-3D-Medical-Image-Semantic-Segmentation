@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-def resunet_3d(n_classes, base_filters, channel_in):
+def deeper_resunet_3d(n_classes, base_filters, channel_in):
     model_in_block = in_block(channel_in=channel_in, channel_out=base_filters)
     model_encoder = encoder(base_filters=base_filters)
     model_decoder = decoder(base_filters=base_filters)
@@ -171,7 +171,8 @@ class encoder(nn.Module):
     dataflow:
     x --down_block2--> down_level2 
     --down_block3--> down_level3 
-    --down_block4--> codes
+    --down_block4--> down_level4 
+    --down_bridge--> codes
 
     parameters:
         base_filters: number of filters received from in_block; 16 by default.
@@ -197,12 +198,17 @@ class encoder(nn.Module):
             channel_in=self.bf *4,
             downsample=True
         )
+        self.down_bridge = res_block(
+            channel_in=self.bf *8,
+            downsample=True
+        )
 
     def forward(self, x):
 
         self.down_level2 = self.down_block2(x)
         self.down_level3 = self.down_block3(self.down_level2)
-        self.codes = self.down_block4(self.down_level3)
+        self.down_level4 = self.down_block4(self.down_level3)
+        self.codes = self.down_bridge(self.down_level4)
 
         return self.codes
 
@@ -211,7 +217,8 @@ class decoder(nn.Module):
     decoder
 
     dataflow:
-    x  --upsample3--> up3 --up_block3--> up_level3
+    x --upsample4--> up4 --up_block4--> up_level4 
+    --upsample3--> up3 --up_block3--> up_level3
     --upsample2--> up2 --up_block2--> up_level2
     --upsample1--> up1 --up_block1--> up_level1
 
@@ -226,6 +233,21 @@ class decoder(nn.Module):
         super(decoder, self).__init__()
         self.bf = base_filters
         
+        self.upsample4 = nn.ConvTranspose3d(
+            in_channels=self.bf*16 ,
+            out_channels=self.bf*8 , 
+            kernel_size=2, 
+            stride=2
+        )
+        self.conv4 = nn.Conv3d(
+            in_channels=self.bf*16,
+            out_channels=self.bf*8,
+            kernel_size=1
+        )
+        self.up_block4 = res_block(
+            channel_in=self.bf*8,
+            downsample=False
+        )
 
         self.upsample3 = nn.ConvTranspose3d(
             in_channels=self.bf*8,
@@ -277,8 +299,10 @@ class decoder(nn.Module):
     
     def forward(self, x):
         
+        up4 = self.upsample4(x)
+        self.up_level4 = self.up_block4(up4)
 
-        up3 = self.upsample3(x)
+        up3 = self.upsample3(self.up_level4)
         self.up_level3 = self.up_block3(up3)
 
         up2 = self.upsample2(self.up_level3)
@@ -338,9 +362,15 @@ class seg_path(nn.Module):
 
         self.down_level2 = self.encoder.down_block2(self.down_level1)
         self.down_level3 = self.encoder.down_block3(self.down_level2)
-        self.codes = self.encoder.down_block4(self.down_level3)
+        self.down_level4 = self.encoder.down_block4(self.down_level3)
+        self.codes = self.encoder.down_bridge(self.down_level4)
 
-        self.up3 = self.decoder.upsample3(self.codes)
+        self.up4 = self.decoder.upsample4(self.codes)
+        up4_dummy = torch.cat([self.up4, self.down_level4],1)
+        up4_dummy = self.decoder.conv4(up4_dummy)
+        self.up_level4 = self.decoder.up_block4(up4_dummy)
+
+        self.up3 = self.decoder.upsample3(self.up_level4)
         up3_dummy = torch.cat([self.up3, self.down_level3], 1)
         up3_dummy = self.decoder.conv3(up3_dummy)
         self.up_level3 = self.decoder.up_block3(up3_dummy)

@@ -10,7 +10,7 @@ import torch
 import torch.nn as nn
 from tensorboardX import SummaryWriter
 
-from libs.models import ResUnet_3D
+from libs.models import Deeper_ResUnet_3D, ResUnet_3D
 from libs.optimizers import get_optimizer
 from libs.schedulers import get_scheduler
 from libs.utils.logging import get_logger

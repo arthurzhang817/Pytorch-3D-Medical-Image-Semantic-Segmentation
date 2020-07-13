@@ -3,7 +3,7 @@ CUDA: True
 PARALLEL: TRUE
 
 MODEL:
-  NAME: ResUnet_3D
+  NAME: Deeper_ResUnet_3D
   BASE_FILTERS: 64
   CHANNEL_IN: 1
   INIT_MODEL:
@@ -18,17 +18,17 @@ DATASET:
   COLOR_MAP: [[229, 255, 204],[0, 255, 255],[204, 0, 102],[255, 0, 0],[0, 255, 0]]
 
 TRAINING:
-  ITER_MAX: 30000
+  ITER_MAX: 200
   WORKERS: 8
   BATCH_SIZE: 2
-  VAL_INTERVAL: 1500
-  PRINT_INTERVAL: 300
+  VAL_INTERVAL: 100
+  PRINT_INTERVAL: 50
   OPTIM:
     name: adam
-    lr: 0.001
+    lr: 0.0001
   LR_SCHEDULER:
     name: poly_lr
-    max_iter: 30000
+    max_iter: 200
   LOSS_FUNC:
     name: cross_entropy3d
     reduction: mean
