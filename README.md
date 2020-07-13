@@ -7,12 +7,10 @@ Radiotherapy treatment planning requires accurate contours for maximizing target
 
 ## Example
 
-|![patient_1_000146](https://user-images.githubusercontent.com/24512849/87240169-c5625a00-c3dc-11ea-88c2-9147893ef1f8.png)|![patient_1_000146_target](https://user-images.githubusercontent.com/24512849/87240172-c5faf080-c3dc-11ea-89f2-8f46fa6ca3d2.png)|![patient_1_000146_pred_ARPC_net](https://user-images.githubusercontent.com/24512849/87240170-c5625a00-c3dc-11ea-8649-7560def4271b.png)|![patient_1_000146_pred_ARPC_net_overlay_comp](https://user-images.githubusercontent.com/24512849/87240171-c5625a00-c3dc-11ea-9f79-d3590715b2d3.png)|
-|:-:|:-:|:-:|:--:|
-|![patient_1_000166](https://user-images.githubusercontent.com/24512849/87240173-c5faf080-c3dc-11ea-9d4d-4f77a0537355.png)|![patient_1_000166_target](https://user-images.githubusercontent.com/24512849/87240176-c6938700-c3dc-11ea-9824-342bc189c969.png)|![patient_1_000166_pred_ARPC_net](https://user-images.githubusercontent.com/24512849/87240174-c5faf080-c3dc-11ea-9ff0-574204d1d659.png)|![patient_1_000166_pred_ARPC_net_overlay_comp](https://user-images.githubusercontent.com/24512849/87240175-c6938700-c3dc-11ea-97b0-f1d9f5356b6e.png)|
-|![patient_1_000173](https://user-images.githubusercontent.com/24512849/87240071-be871780-c3db-11ea-8c04-afb9571c18b3.png)|![patient_1_000173_target](https://user-images.githubusercontent.com/24512849/87240070-be871780-c3db-11ea-8b24-f5d6fdf29ac8.png)|![patient_1_000173_pred_ARPC_net](https://user-images.githubusercontent.com/24512849/87240072-be871780-c3db-11ea-8e00-2629bc82bc58.png)|![patient_1_000173_pred_ARPC_net_overlay_comp](https://user-images.githubusercontent.com/24512849/87240069-bdee8100-c3db-11ea-9481-ef6b5e25b545.png)|
-|![patient_1_000190](https://user-images.githubusercontent.com/24512849/87240177-c6938700-c3dc-11ea-8be5-36d4bedb5ed5.png)|![patient_1_000190_target](https://user-images.githubusercontent.com/24512849/87240227-3ace2a80-c3dd-11ea-8036-37ae003515e5.png)|![patient_1_000190_pred_ARPC_net](https://user-images.githubusercontent.com/24512849/87240178-c6938700-c3dc-11ea-8ac4-5b3c6ca628ba.png)|![patient_1_000190_pred_ARPC_net_overlay_comp](https://user-images.githubusercontent.com/24512849/87240225-3570e000-c3dd-11ea-9cdf-b333bcb178ad.png)|
-|CT Slice|Ground Truth|Prediction|Contour Overlay| 
+|![ezgif com-gif-maker](https://user-images.githubusercontent.com/24512849/87363829-a0cec500-c537-11ea-9c74-7c94d8ba0687.gif)|![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/24512849/87363843-a6c4a600-c537-11ea-80be-4c18407cba61.gif)|![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/24512849/87363872-bc39d000-c537-11ea-866e-6f37e3ee2615.gif)|
+|:-:|:-:|:-:|
+|![ezgif com-gif-maker (3)](https://user-images.githubusercontent.com/24512849/87364053-31a5a080-c538-11ea-918a-4aa45dcae14e.gif)|![ezgif com-gif-maker (4)](https://user-images.githubusercontent.com/24512849/87364058-35d1be00-c538-11ea-9ffd-d2f9dcc2ca7c.gif)|![ezgif com-gif-maker (5)](https://user-images.githubusercontent.com/24512849/87364085-47b36100-c538-11ea-92ca-983231dbe1a3.gif)|
+|CT Slice|Ground Truth|Prediction|
 
 # Update Log
 
