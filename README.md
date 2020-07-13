@@ -24,3 +24,4 @@ Radiotherapy treatment planning requires accurate contours for maximizing target
 7/13/2020 Update
 
 - Model: 3D Residual U-net
+- Normalization control in dataloader
