@@ -26,3 +26,5 @@ Radiotherapy treatment planning requires accurate contours for maximizing target
 
 # Consider citing our paper:
 Zhang, Z., Zhao, T., Gay, H., Zhang, W., & Sun, B. (2020). ARPM‐net: A novel CNN‐based adversarial method with Markov Random Field enhancement for prostate and organs at risk segmentation in pelvic CT images. Medical Physics.
+
+Zhang, Z., Zhao, T., Gay, H., Sun, B., & Zhang, W. (2020). Semi-supervised Semantic Segmentation of Organs at Risk on 3D Pelvic CT Images. arXiv preprint arXiv:2009.09571.
