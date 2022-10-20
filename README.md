@@ -25,6 +25,8 @@ Radiotherapy treatment planning requires accurate contours for maximizing target
 - Normalization control in dataloader
 
 # Consider citing our paper:
-Zhang, Z., Zhao, T., Gay, H., Zhang, W., & Sun, B. (2020). ARPM‐net: A novel CNN‐based adversarial method with Markov Random Field enhancement for prostate and organs at risk segmentation in pelvic CT images. Medical Physics.
+Zhang, Z., Zhao, T., Gay, H., Zhang, W., & Sun, B. (2020). ARPM‐net: A novel CNN‐based adversarial method with Markov Random Field enhancement for prostate and organs at risk segmentation in pelvic CT images. Medical Physics. [https://aapm.onlinelibrary.wiley.com/doi/abs/10.1002/mp.14580]
 
-Zhang, Z., Zhao, T., Gay, H., Sun, B., & Zhang, W. (2020). Semi-supervised Semantic Segmentation of Organs at Risk on 3D Pelvic CT Images. arXiv preprint arXiv:2009.09571.
+Zhang, Z., Zhao, T., Gay, H., Zhang, W. and Sun, B., 2021. Weaving attention U‐net: A novel hybrid CNN and attention‐based method for organs‐at‐risk segmentation in head and neck CT images. Medical physics, 48(11), pp.7052-7062. [https://aapm.onlinelibrary.wiley.com/doi/abs/10.1002/mp.15287]
+
+
